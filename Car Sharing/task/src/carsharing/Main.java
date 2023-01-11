@@ -9,25 +9,17 @@ import java.util.Optional;
 public class Main {
 
     public static void main(String[] args) {
-        // write your code here
-        String DBName = "kronos";
-        String SQL_COMPANY = "CREATE TABLE IF NOT EXISTS COMPANY " +
-                "(ID INTEGER , " +
-                "NAME VARCHAR(255) UNIQUE NOT NULL)";
 
-        if (args.length != 0 && Optional.of(args[0]).get().equals("-databaseFileName")) {
-            DBName = args[1];
-        }
+        // set dbname
+        H2.setDBName(args);
+        // initialize db
+        H2.initializeDB();
 
-        Connection connection = null;
-        try{
-            connection = DriverManager.getConnection("jdbc:h2:./src/carsharing/db/"+DBName);
-            connection.setAutoCommit(true);
+        // List the menu
+        Menu.showMenu();
 
-            Statement st = connection.createStatement();
-            st.execute(SQL_COMPANY);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+
+
+
     }
 }
