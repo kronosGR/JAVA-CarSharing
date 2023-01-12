@@ -1,6 +1,6 @@
 package carsharing.Model;
 
-public class Company {
+public class Company extends Object {
     private int id;
     private String name;
 

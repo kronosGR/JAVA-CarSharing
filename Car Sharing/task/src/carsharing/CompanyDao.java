@@ -36,9 +36,9 @@ public class CompanyDao implements Dao{
     }
 
     @Override
-    public boolean create(Company object) {
+    public boolean create(Object obj) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(Q_CREATE)){
-            preparedStatement.setString(1, object.getName());
+            preparedStatement.setString(1, ((Company)obj).getName());
             preparedStatement.executeUpdate();
         } catch (SQLException e){
             System.out.println("Error while inserting company");
