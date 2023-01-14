@@ -52,8 +52,37 @@ public class Menu {
             return;
         }
 
-        for (Company company : companiesList) {
-            System.out.println(company.toString());
+        boolean active = true;
+        while (active) {
+            System.out.println();
+            System.out.println("Choose a company:");
+
+            for (Company company : companiesList) {
+                System.out.println(company.toString());
+            }
+            System.out.println("0. Back");
+            int opt = Integer.parseInt(sc.nextLine());
+
+            switch (opt) {
+                case 0 -> active = false;
+                case 1 -> carList(companiesList.get(opt - 1));
+            }
+        }
+    }
+
+    private static void carList(Company company) {
+        boolean active = false;
+        System.out.println("'"+company.getName()+"' company");
+        while(active){
+            System.out.println("1. Car list");
+            System.out.println("2. Create a car");
+            System.out.println("0. Back");
+            int opt = Integer.parseInt(sc.nextLine());
+
+            switch (opt){
+                case 0-> active = false;
+                // todo 1 2
+            }
         }
     }
 

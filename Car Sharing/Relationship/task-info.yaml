@@ -557,6 +557,234 @@ files:
         }
     }
   learner_created: false
+- name: src/carsharing/Menu.java
+  visible: true
+  text: |
+    package carsharing;
+
+    import carsharing.Model.Company;
+
+    import java.util.List;
+    import java.util.Scanner;
+
+    public class Menu {
+        private static Scanner sc = new Scanner(System.in);
+        private static CompanyDao companies = new CompanyDao();
+
+        public static void showMenu() {
+            boolean active = true;
+            while (active) {
+                System.out.println("1. Log in as a manager");
+                System.out.println("0. Exit");
+
+                int sel = sc.nextInt();
+
+                switch (sel) {
+                    case 1 -> showManagerMenu();
+                    case 0 -> active = false;
+                    default -> System.out.println("Invalid selection");
+                }
+            }
+        }
+
+        private static void showManagerMenu() {
+            boolean active = true;
+            while (active) {
+                System.out.println("1. Company list");
+                System.out.println("2. Create a company");
+                System.out.println("0. Back");
+
+                int sel = sc.nextInt();
+                switch (sel) {
+                    case 0 -> active = false;
+                    case 1 -> companyList();
+                    case 2 -> createCompany();
+                    default -> System.out.println("Invalid selection");
+                }
+            }
+        }
+
+
+        private static void companyList() {
+            List<Company> companiesList = companies.getAll();
+
+            if (companiesList.isEmpty()) {
+                System.out.println();
+                System.out.println("The company list is empty!");
+                return;
+            }
+
+            for (Company company : companiesList) {
+                System.out.println(company.toString());
+            }
+        }
+
+        private static void createCompany() {
+            System.out.println("Enter the company name:");
+            sc.nextLine();
+            String name = sc.nextLine();
+            companies.create(new Company(0, name));
+            System.out.println();
+            System.out.println("The company was created!");
+        }
+    }
+  learner_created: true
+- name: src/carsharing/H2.java
+  visible: true
+  text: |
+    package carsharing;
+
+    import java.sql.Connection;
+    import java.sql.DriverManager;
+    import java.sql.SQLException;
+    import java.sql.Statement;
+    import java.util.Optional;
+
+    public class H2 {
+        private static String SQL_COMPANY= "CREATE TABLE IF NOT EXISTS COMPANY " +
+                "(ID INTEGER PRIMARY KEY AUTO_INCREMENT, " +
+                "NAME VARCHAR(255) UNIQUE NOT NULL)";
+
+        private static String URL = "jdbc:h2:./src/carsharing/db/";
+        private static String DBName = "kronos";
+
+        public static void setDBName(String[] args) {
+            if (args.length != 0 && Optional.of(args[0]).get().equals("-databaseFileName")) {
+                DBName = args[1];
+            }
+        }
+
+        public static void initializeDB(){
+            try(Connection connection =  getConnection()){
+                Statement statement = connection.createStatement();
+                statement.execute(SQL_COMPANY);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        public static Connection getConnection(){
+            Connection connection = null;
+            try{
+                connection = DriverManager.getConnection("jdbc:h2:./src/carsharing/db/"+DBName);
+                connection.setAutoCommit(true);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+            return  connection;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/Dao.java
+  visible: true
+  text: |
+    package carsharing;
+
+    import carsharing.Model.Company;
+
+    import java.util.List;
+
+    public interface Dao<T> {
+        List<T> getAll();
+        boolean create(T obj);
+
+    }
+  learner_created: true
+- name: src/carsharing/CompanyDao.java
+  visible: true
+  text: |
+    package carsharing;
+
+    import carsharing.Model.Company;
+
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class CompanyDao implements Dao{
+
+        private static Connection connection = H2.getConnection();
+        private List<Company> companies;
+
+        private static String Q_SELECT_ALL ="select * from company";
+        private static String Q_CREATE = "insert into company (name) values (?)";
+
+        public CompanyDao() {
+            this.companies = new ArrayList<>();
+        }
+
+        @Override
+        public List<Company> getAll() {
+            try {
+                companies.clear();
+                ResultSet resultSet = connection.createStatement().executeQuery(Q_SELECT_ALL);
+                while (resultSet.next()){
+                    companies.add(new Company(resultSet.getInt("id"), resultSet.getString("name")));
+                }
+            } catch (Exception e){
+                System.out.println("Error while getting all companies");
+            }
+            return companies;
+        }
+
+        @Override
+        public boolean create(Object obj) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(Q_CREATE)){
+                preparedStatement.setString(1, ((Company)obj).getName());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e){
+                System.out.println("Error while inserting company");
+                return false;
+            }
+            return true;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/Model/Company.java
+  visible: true
+  text: |
+    package carsharing.Model;
+
+    public class Company extends Object {
+        private int id;
+        private String name;
+
+        public Company(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return id + ". " + name;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/Model/Car.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/CarDao.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/11503#comment
 status: Unchecked
 record: -1

@@ -10,6 +10,12 @@ public class H2 {
     private static String SQL_COMPANY= "CREATE TABLE IF NOT EXISTS COMPANY " +
             "(ID INTEGER PRIMARY KEY AUTO_INCREMENT, " +
             "NAME VARCHAR(255) UNIQUE NOT NULL)";
+    private static String SQL_CAR = "CREATE TABLE IF NOT EXISTS CAR " +
+            "(ID INTEGER PRIMARY KEY AUTO_INCREMENT, " +
+            "NAME VARCHAR(255) UNIQUE NOT NULL, " +
+            "COMPANY_ID INTEGER NOT NULL, " +
+            "CONSTRAINT fk_company " +
+            "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY (ID))";
 
     private static String URL = "jdbc:h2:./src/carsharing/db/";
     private static String DBName = "kronos";
@@ -24,6 +30,7 @@ public class H2 {
         try(Connection connection =  getConnection()){
             Statement statement = connection.createStatement();
             statement.execute(SQL_COMPANY);
+            statement.execute(SQL_CAR);
         } catch (SQLException e){
             e.printStackTrace();
         }
