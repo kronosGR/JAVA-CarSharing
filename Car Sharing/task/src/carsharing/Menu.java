@@ -1,13 +1,17 @@
 package carsharing;
 
+import carsharing.Model.Car;
 import carsharing.Model.Company;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Menu {
     private static Scanner sc = new Scanner(System.in);
     private static CompanyDao companies = new CompanyDao();
+    private static CarDao cars = new CarDao();
 
     public static void showMenu() {
         boolean active = true;
@@ -15,7 +19,7 @@ public class Menu {
             System.out.println("1. Log in as a manager");
             System.out.println("0. Exit");
 
-            int sel = sc.nextInt();
+            int sel = Integer.parseInt(sc.nextLine());
 
             switch (sel) {
                 case 1 -> showManagerMenu();
@@ -32,7 +36,8 @@ public class Menu {
             System.out.println("2. Create a company");
             System.out.println("0. Back");
 
-            int sel = sc.nextInt();
+            int sel = Integer.parseInt(sc.nextLine());
+
             switch (sel) {
                 case 0 -> active = false;
                 case 1 -> companyList();
@@ -55,15 +60,15 @@ public class Menu {
         boolean active = true;
         while (active) {
             System.out.println();
-            System.out.println("Choose a company:");
+            System.out.println("Choose the company:");
 
             for (Company company : companiesList) {
                 System.out.println(company.toString());
             }
             System.out.println("0. Back");
             int opt = Integer.parseInt(sc.nextLine());
-
-            switch (opt) {
+            int p = opt > companiesList.size() ? -1 : opt == 0 ? 0 : 1;
+            switch (p) {
                 case 0 -> active = false;
                 case 1 -> carList(companiesList.get(opt - 1));
             }
@@ -71,27 +76,49 @@ public class Menu {
     }
 
     private static void carList(Company company) {
-        boolean active = false;
-        System.out.println("'"+company.getName()+"' company");
-        while(active){
+        boolean active = true;
+        System.out.println("'" + company.getName() + "' company");
+        while (active) {
             System.out.println("1. Car list");
             System.out.println("2. Create a car");
             System.out.println("0. Back");
             int opt = Integer.parseInt(sc.nextLine());
 
-            switch (opt){
-                case 0-> active = false;
-                // todo 1 2
+            switch (opt) {
+                case 0 -> active = false;
+                case 1 -> listCars(company);
+                case 2 -> createCar(company);
             }
         }
     }
 
     private static void createCompany() {
         System.out.println("Enter the company name:");
-        sc.nextLine();
         String name = sc.nextLine();
         companies.create(new Company(0, name));
         System.out.println();
         System.out.println("The company was created!");
+    }
+
+    private static void listCars(Company company) {
+        List<Car> list = cars.getCarsByCompany(company);
+        if (list.isEmpty()) {
+            System.out.println();
+            System.out.println("The car list is empty!");
+            return;
+        }
+        System.out.println();
+        System.out.println("Car list:");
+        IntStream.range(0, list.size()).forEach(idx -> {
+            System.out.println(idx + 1 + ". " + list.get(idx).getName());
+        });
+    }
+
+    private static void createCar(Company company) {
+        System.out.println("Enter the car name:");
+        String name = sc.nextLine();
+        cars.create(new Car(0, name, company.getId()));
+        System.out.println();
+        System.out.println("The car was added!");
     }
 }

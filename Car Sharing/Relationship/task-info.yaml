@@ -786,5 +786,101 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/11503#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: |-
+    Wrong answer in test #7
+
+    If no cars were added to the company you should print &#39;The car list is empty!&#39;
+
+    Please find below the output of your program during this failed test.
+    Note that the &#39;&gt;&#39; character indicates the beginning of the input line.
+
+    ---
+
+    Arguments: -databaseFileName carsharing
+
+    1. Log in as a manager
+    0. Exit
+    &gt; 1
+    1. Company list
+    2. Create a company
+    0. Back
+    &gt; 2
+    Enter the company name:
+    &gt; Car To Go
+
+    The company was created!
+    1. Company list
+    2. Create a company
+    0. Back
+    &gt; 2
+    Enter the company name:
+    &gt; Drive Now
+
+    The company was created!
+    1. Company list
+    2. Create a company
+    0. Back
+    &gt; 1
+
+    Choose the company:
+    1. Car To Go
+    2. Drive Now
+    0. Back
+    &gt; 1
+    &#39;Car To Go&#39; company
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 1
+
+    The car list is empty!
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 2
+    Enter the car name:
+    &gt; Hyundai Venue
+
+    The car was added!
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 2
+    Enter the car name:
+    &gt; Maruti Suzuki Dzire
+
+    The car was added!
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 1
+
+    Car list:
+    1. Hyundai Venue
+    2. Maruti Suzuki Dzire
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 0
+
+    Choose the company:
+    1. Car To Go
+    2. Drive Now
+    0. Back
+    &gt; 1
+    &#39;Car To Go&#39; company
+    1. Car list
+    2. Create a car
+    0. Back
+    &gt; 2
+    Enter the car name:
+    &gt; 1
+
+    The car was added!
+    1. Car list
+    2. Create a car
+    0. Back
+  time: Sun, 15 Jan 2023 19:09:20 UTC
 record: -1
