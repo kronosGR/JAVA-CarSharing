@@ -70,7 +70,10 @@ public class Menu {
             int p = opt > companiesList.size() ? -1 : opt == 0 ? 0 : 1;
             switch (p) {
                 case 0 -> active = false;
-                case 1 -> carList(companiesList.get(opt - 1));
+                case 1 -> {
+                    carList(companiesList.get(opt - 1));
+                    active = false;
+                }
             }
         }
     }
@@ -112,6 +115,7 @@ public class Menu {
         IntStream.range(0, list.size()).forEach(idx -> {
             System.out.println(idx + 1 + ". " + list.get(idx).getName());
         });
+        System.out.println();
     }
 
     private static void createCar(Company company) {
