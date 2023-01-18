@@ -1,6 +1,6 @@
 <h2>Optional</h2>
-<html><body><h5 id="a-billion-dollar-mistake">A billion-dollar mistake</h5>
-<p>Like many programming languages, Java uses <code class="language-java">null</code> to represent the absence of a value. Sometimes this approach leads to exceptions like <strong>NPE</strong> while non-null checks make code less readable. The British computer scientist Tony Hoare—the inventor of the <code class="language-java">null</code> concept—even describes introducing <code class="language-java">null</code> as a <strong>"billion-dollar mistake" </strong>since it has led to innumerable errors, vulnerabilities, and system crashes. To avoid the issues associated with <code class="language-java">null</code>, Java provides the <code class="language-java">Optional</code> class that is a safer alternative for standard <code class="language-java">null</code> references.</p>
+<h5 id="a-billion-dollar-mistake">A billion-dollar mistake</h5>
+<p>Like many programming languages, Java uses <code class="language-java">null</code> to represent the absence of a value. Sometimes this approach leads to exceptions like <strong>NPEs</strong> since non-null checks make code less readable. The British computer scientist Tony Hoare—the inventor of the <code class="language-java">null</code> concept—even describes introducing <code class="language-java">null</code> as a <strong>"billion-dollar mistake" </strong>since it has led to innumerable errors, vulnerabilities, and system crashes. To avoid the issues associated with <code class="language-java">null</code>, Java provides the <code class="language-java">Optional</code> class that is a safer alternative for standard <code class="language-java">null</code> references.</p>
 <h5 id="optional-values">Optional values</h5>
 <p>The <code class="language-java">Optional&lt;T&gt;</code> class represents the presence or absence of a value of the specified type <code class="language-java">T</code>. An object of this class can be either <strong>empty</strong> or <strong>non-empty</strong>.</p>
 <ul>
@@ -12,10 +12,14 @@ Optional&lt;String&gt; present = Optional.of("Hello");</code></pre>
 <pre><code class="language-java">System.out.println(absent.isPresent()); // false
 System.out.println(present.isPresent()); // true</code></pre>
 <p>Starting with Java 11, we can also invoke the opposite <code class="language-java">isEmpty</code> method.</p>
-<p></p><div class="alert alert-warning">If you pass the <code class="language-java">null</code> object to the <code class="language-java">of</code> method, it will cause <strong>NPE</strong>.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-warning">If you pass the <code class="language-java">null</code> object to the <code class="language-java">of</code> method, it will cause <strong>NPE</strong>.</div>
+<p> </p>
 <h5 id="optionals-and-nullable-objects">Optionals and nullable objects</h5>
 <p>In a situation when you don't know whether a variable is <code class="language-java">null</code> or not, you should pass it to the <code class="language-java">ofNullable</code> method instead of the <code class="language-java">of</code> method. It creates an empty Optional if the passed value is <code class="language-java">null</code>.</p>
-<p></p><div class="alert alert-primary">The word <code class="language-java">nullable</code> means that a variable is potentially <code class="language-java">null</code>.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-primary">The word <code class="language-java">nullable</code> means that a variable is potentially <code class="language-java">null</code>.</div>
+<p> </p>
 <p>In the following example, the <code class="language-java">getRandomMessage</code> method may return <code class="language-java">null</code> or some string message. Depending on what is returned, the result will be different.</p>
 <pre><code class="language-java">String message = getRandomMessage(); // it may be null
 
@@ -24,11 +28,13 @@ Optional&lt;String&gt; optMessage = Optional.ofNullable(message);
 System.out.println(optMessage.isPresent()); // true or false</code></pre>
 <p>If the <code class="language-java">message</code> is not <code class="language-java">null</code> (e.g. <code class="language-java">"Hello"</code>) the code will print <code class="language-java">true</code>. Otherwise, it will print <code class="language-java">false</code> because the Optional object is empty.</p>
 <p>In a sense, <code class="language-java">Optional</code> is like a box that contains either some value or nothing. It wraps a value or <code class="language-java">null</code> keeping the possibility to check it by using special methods.</p>
-<p style="text-align: center;"><img alt="" src="https://ucarecdn.com/41114e98-1537-4b0e-ac98-a8575ce0917f/"/></p>
+<p style="text-align: center;"><img alt="" height="252" src="https://ucarecdn.com/41114e98-1537-4b0e-ac98-a8575ce0917f/" width="332"/></p>
 <p>As you can see, the idea is pretty simple. Let's consider what we can do with Optionals.</p>
-<p></p><div class="alert alert-warning">It is important that assigning the <code class="language-java">null</code> value to a variable of the <code class="language-java">Optional</code> type is possible, but it is considered as a bad programming practice.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-warning">It is important that assigning the <code class="language-java">null</code> value to a variable of the <code class="language-java">Optional</code> type is possible, but it is considered as a bad programming practice.</div>
+<p> </p>
 <h5 id="getting-the-value-from-an-optional">Getting the value from an Optional</h5>
-<p>The most obvious thing to do with an Optional is to get its value. For now, we're going to discuss three methods with such purpose:</p>
+<p>The most obvious thing to do with an Optional is to get its value. For now, we're going to discuss three methods with this purpose:</p>
 <ul>
 <li><code class="language-java">get</code> returns the value if it's present, otherwise throws an exception;</li>
 <li><code class="language-java">orElse</code> returns the value if it's present, otherwise returns <code class="language-java">other</code>;</li>
@@ -41,7 +47,9 @@ String name = optName.get(); // "John"</code></pre>
 <pre><code class="language-java">Optional&lt;String&gt; optName = Optional.ofNullable(null);
 String name = optName.get(); // throws NoSuchElementException</code></pre>
 <p>This is not exactly what we would expect from the class designed to reduce the number of exceptions.</p>
-<p></p><div class="alert alert-primary">Since Java 10, the preferred alternative to the <code class="language-java">get</code> method is the <code class="language-java">orElseThrow</code> method whose behavior is the same, but the name describes it better.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-primary">Since Java 10, the preferred alternative to the <code class="language-java">get</code> method is the <code class="language-java">orElseThrow</code> method whose behavior is the same, but the name describes it better.</div>
+<p> </p>
 <p>Other methods allow us to handle the empty Optional case. Let's consider them.</p>
 <p>The <code class="language-java">orElse</code> method is used to extract the value wrapped inside an Optional object or return some default value when the Optional is empty. The default value is passed to the method as its argument:</p>
 <pre><code class="language-java">String nullableName = null;
@@ -81,7 +89,7 @@ optName.ifPresentOrElse(
         (name) -&gt; System.out.println(name.length()), 
         () -&gt; System.out.println(0)
 );</code></pre>
-<p>If <code class="language-java">optName</code> contains some value (like <code class="language-java">"Google"</code>), the lambda expression is called and it prints the length of the name. If <code class="language-java">optName</code> is empty, the second function prints <code class="language-java">0</code> as the default value. Sometimes, developers call the second lambda expression <strong>fallback</strong> which is an alternative plan if something went wrong (no value).</p>
+<p>If <code class="language-java">optName</code> contains some value (like <code class="language-java">"Google"</code>), the lambda expression is called and it prints the length of the name. If <code class="language-java">optName</code> is empty, the second function prints <code class="language-java">0</code> as the default value. Sometimes, developers call the second lambda expression a <strong>fallback,</strong> which is an alternative plan when something goes wrong (no value).</p>
 <h5 id="conclusion">Conclusion</h5>
 <p>Objects of the <code class="language-java">Optional</code> class represent the presence or absence of a value in a safer way than <code class="language-java">null</code> does.</p>
 <p>This class:</p>
@@ -90,4 +98,4 @@ optName.ifPresentOrElse(
 <li>reduces the boilerplate code for checking <code class="language-java">null</code> (such as <code class="language-java">if (something == null)</code>);</li>
 <li>provides a rich set of functional methods.</li>
 </ul>
-<p>Now, you can choose the most appropriate way to represent a possibly missing value besides using <code class="language-java">null</code>. In this topic, we haven't considered some advanced functional methods like <code class="language-java">map</code>, <code class="language-java">filter</code>, and <code class="language-java">flatMap</code>, but they will be considered further.</p></body></html>
+<p>Now, you can choose the most appropriate way to represent a possibly missing value besides using <code class="language-java">null</code>. In this topic, we haven't considered some advanced functional methods like <code class="language-java">map</code>, <code class="language-java">filter</code>, and <code class="language-java">flatMap</code>, but they will be considered later.</p>
