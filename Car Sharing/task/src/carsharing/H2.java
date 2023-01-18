@@ -16,6 +16,12 @@ public class H2 {
             "COMPANY_ID INTEGER NOT NULL, " +
             "CONSTRAINT fk_company " +
             "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY (ID))";
+    private static String SQL_CUSTOMER = "CREATE TABLE IF NOT EXISTS CUSTOMER " +
+            "(ID INTEGER PRIMARY KEY AUTO_INCREMENT, " +
+            "NAME VARCHAR(255) UNIQUE NOT NULL, " +
+            "RENTED_CAR_ID INTEGER DEFAULT NULL, " +
+            "CONSTRAINT fk_car " +
+            "FOREIGN KEY (RENTED_CAR_ID) REFERENCES CAR (ID))";
 
     private static String URL = "jdbc:h2:./src/carsharing/db/";
     private static String DBName = "kronos";
@@ -31,6 +37,7 @@ public class H2 {
             Statement statement = connection.createStatement();
             statement.execute(SQL_COMPANY);
             statement.execute(SQL_CAR);
+            statement.execute(SQL_CUSTOMER);
         } catch (SQLException e){
             e.printStackTrace();
         }

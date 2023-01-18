@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CarDao implements Dao{
 
@@ -16,6 +17,9 @@ public class CarDao implements Dao{
 
     static String Q_SELECT_ALL = "select * from car";
     static String Q_SELECT_ALL_BY_COMPANY = Q_SELECT_ALL + " where company_id=?";
+
+    static String Q_SELECT_ALL_BY_NAME = Q_SELECT_ALL + " where name=?";
+    static String Q_SELECT_ALL_BY_ID = Q_SELECT_ALL + " where id=?";
     static String Q_CREATE = "insert into car (name, company_id) values(?,?)";
 
     @Override
@@ -35,6 +39,38 @@ public class CarDao implements Dao{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean delete(long id) {
+        // no need for this one
+        return false;
+    }
+
+    @Override
+    public boolean update(Object obj) {
+        // no need for this one
+        return false;
+    }
+
+    @Override
+    public Optional getByName(String name) {
+        Optional<Car> car = Optional.empty();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(Q_SELECT_ALL_BY_NAME)) {
+            preparedStatement.setString(1, name);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                car = Optional.of(new Car(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("company_id")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while getting car");
+        }
+        return car;
     }
 
     public List<Car> getCarsByCompany(Company company){

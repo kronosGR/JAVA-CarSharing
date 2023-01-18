@@ -68,7 +68,7 @@ public class CustomerDao implements Dao {
     }
 
     @Override
-    public boolean delete(Object obj) {
+    public boolean delete(long id) {
         // no need for this one
         return false;
     }
