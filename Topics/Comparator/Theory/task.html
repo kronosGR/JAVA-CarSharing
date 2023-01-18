@@ -19,7 +19,7 @@
         return content;
    }
 }</code></pre>
-<p style="font-variant: normal;"><span style="color: #000000;">Now we need to put a few of such messages in a collection to work with:</span></p>
+<p style="font-variant: normal;"><span style="color: #000000;">Now we need to put a few such messages in a collection to work with:</span></p>
 <pre><code class="language-java">List&lt;Message&gt; messages = new ArrayList&lt;&gt;();
 
 messages.add(new Message("Hello"));
@@ -147,7 +147,7 @@ messages.sort(dateComparator);</code></pre>
 <p style="font-variant: normal;"><span style="color: #000000;">If you are not going to reuse a <code class="language-java">Comparator</code> object, declaring it as a standalone class would be unnecessary, so you can just define it as a lambda function and use it immediately.</span></p>
 <h5 id="utility-methods" style="font-variant: normal;">Utility methods</h5>
 <p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">Comparator</code> also has several non-abstract methods that can be used for combining comparators to create complex conditions for comparing objects. Let's take a look at some of them.</span></p>
-<p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">Comparator.naturalOrder</code> returns a <code class="language-java">Comparator</code> of the applicable type that compares <code class="language-java">Comparable</code> objects in the natural order. This means that if the class you want to compare using this method does not implement the <code class="language-java">Comparable</code> interface, you will get a compilation error.</span></p>
+<p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">Comparator.naturalOrder</code> returns <code class="language-java">Comparator</code> of the applicable type that compares <code class="language-java">Comparable</code> objects in the natural order. This means that if the class you want to compare using this method does not implement the <code class="language-java">Comparable</code> interface, you will get a compilation error.</span></p>
 <p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">Comparator.reverseOrder</code> similar to the above, but compares <code class="language-java">Comparable</code> objects using the reverse of the natural ordering.</span></p>
 <p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">reversed</code> is called on a <code class="language-java">Comparator</code> and returns a new <code class="language-java">Comparator</code> that imposes the reverse ordering of the affected <code class="language-java">Comparator</code>.</span></p>
 <p style="font-variant: normal;"><span style="color: #000000;"><code class="language-java">Comparator.comparing</code> accepts a function that extracts a <code class="language-java">Comparable</code> sort key and returns a <code class="language-java">Comparator</code> that compares objects by that key.</span></p>
