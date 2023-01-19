@@ -1268,6 +1268,13 @@ files:
 - name: src/carsharing/CustomerDao.java
   visible: true
   learner_created: true
+- name: src/carsharing/db/carsharing.trace.db
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/11504#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Thu, 19 Jan 2023 10:35:26 UTC
 record: -1

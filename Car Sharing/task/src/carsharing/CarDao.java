@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CarDao implements Dao{
+public class CarDao implements Dao {
 
     static Connection connection = H2.getConnection();
 
@@ -21,6 +21,10 @@ public class CarDao implements Dao{
     static String Q_SELECT_ALL_BY_NAME = Q_SELECT_ALL + " where name=?";
     static String Q_SELECT_ALL_BY_ID = Q_SELECT_ALL + " where id=?";
     static String Q_CREATE = "insert into car (name, company_id) values(?,?)";
+    private static final String Q_SELECT_AVAILABLE_CARS =
+            "select car.id, car.name, car.company_id" +
+                    " from car left join customer on car.id = customer.rented_car_id" +
+                    " where company_id=? and customer.id is null";
 
     @Override
     public List getAll() {
@@ -29,12 +33,12 @@ public class CarDao implements Dao{
 
     @Override
     public boolean create(Object obj) {
-        Car tmp = (Car)obj;
-        try(PreparedStatement preparedStatement= connection.prepareStatement(Q_CREATE)) {
+        Car tmp = (Car) obj;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(Q_CREATE)) {
             preparedStatement.setString(1, tmp.getName());
             preparedStatement.setInt(2, tmp.getCompanyId());
             preparedStatement.execute();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error while inserting");
             return false;
         }
@@ -73,21 +77,58 @@ public class CarDao implements Dao{
         return car;
     }
 
-    public List<Car> getCarsByCompany(Company company){
+    public List<Car> getCarsByCompany(Company company) {
         List<Car> cars = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(Q_SELECT_ALL_BY_COMPANY)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(Q_SELECT_ALL_BY_COMPANY)) {
             preparedStatement.setInt(1, company.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
-                cars.add(new Car (resultSet.getInt("id"),
+            while (resultSet.next()) {
+                cars.add(new Car(resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getInt("company_id")
-                        ));
+                ));
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error while getting the company's cars");
             return null;
+        }
+        return cars;
+    }
+
+    public Optional<Car> getById(long id) {
+        Optional<Car> car = Optional.empty();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(Q_SELECT_ALL_BY_ID)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                car = Optional.of(new Car(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("company_id")));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error while getting the car");
+        }
+        return car;
+    }
+
+    public List<Car> getAvailableCars(Company company) {
+        List<Car> cars = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(Q_SELECT_AVAILABLE_CARS)) {
+            preparedStatement.setInt(1, company.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                cars.add(new Car(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("company_id")));
+            }
+        } catch (Exception e) {
+            System.out.println("Error while getting available cars");
         }
         return cars;
     }
