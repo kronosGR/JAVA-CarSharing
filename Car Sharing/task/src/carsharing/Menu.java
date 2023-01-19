@@ -2,6 +2,7 @@ package carsharing;
 
 import carsharing.Model.Car;
 import carsharing.Model.Company;
+import carsharing.Model.Customer;
 
 import java.io.InputStream;
 import java.util.List;
@@ -12,17 +13,22 @@ public class Menu {
     private static Scanner sc = new Scanner(System.in);
     private static CompanyDao companies = new CompanyDao();
     private static CarDao cars = new CarDao();
+    private static CustomerDao customers = new CustomerDao();
 
     public static void showMenu() {
         boolean active = true;
         while (active) {
             System.out.println("1. Log in as a manager");
+            System.out.println("2. Log in as a customer");
+            System.out.println("3. Create a customer");
             System.out.println("0. Exit");
 
             int sel = Integer.parseInt(sc.nextLine());
 
             switch (sel) {
                 case 1 -> showManagerMenu();
+                case 1 -> showCustomerMenu();
+                case 3 -> createCustomer();
                 case 0 -> active = false;
                 default -> System.out.println("Invalid selection");
             }
@@ -124,5 +130,31 @@ public class Menu {
         cars.create(new Car(0, name, company.getId()));
         System.out.println();
         System.out.println("The car was added!");
+    }
+
+    private static void showCustomerMenu(){
+        List<Customer> customerList = customers.getAll();
+        if (customerList.isEmpty()) {
+            System.out.println("The customer list is empty!");
+            System.out.println();
+            return;
+        }
+
+        boolean active = true;
+        while (active){
+            System.out.println();
+            System.out.println("Customer list:");
+            customerList.forEach(c->System.out.println(c.toString()));
+            //TODO
+        }
+    }
+
+    private static void createCustomer(){
+        System.out.println("Enter the customer name:");
+        String name = sc.nextLine();
+        customers.create(new Customer(0, name));
+        System.out.println();
+        System.out.println("The customer was added!");
+        System.out.println();
     }
 }
